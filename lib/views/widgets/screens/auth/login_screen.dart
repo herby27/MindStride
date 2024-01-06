@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mind_stride/views/widgets/input_text_field.dart';
 import 'package:mind_stride/views/widgets/screens/auth/signup_screen.dart';
 
+import '../../../../controllers/auth_controller.dart';
+
 class LoginScreen extends StatelessWidget{
   LoginScreen({Key? key}) : super(key: key);
 
@@ -71,8 +73,12 @@ class LoginScreen extends StatelessWidget{
               ),
             ),
             child: InkWell(
-              //onTap: () => authController.loginUser(
-              //    _emailController.text, _passwordController.text),
+              onTap: () { //Here we call the AuthController to register a new user
+                AuthController.instance.loginUser(
+                  _emailController.text,
+                  _passwordController.text,
+                );
+              },
               child: const Center(
                 child: Text(
                   'Login',

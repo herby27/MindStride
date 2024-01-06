@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mind_stride/models/user.dart' as model;
+import 'package:mind_stride/views/widgets/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import '../models/user.dart';
@@ -33,7 +34,7 @@ class AuthController extends GetxController {
     if (FirebaseAuth.instance.currentUser == null){ ///checks if no user is currently logged in
       Get.offAll(() => LoginScreen()); ///if there's no user logged in, navigates to the login screen
     } else {
-      Get.offAll(() => Placeholder()); ///if there is a user logged in, navigates to the home screen
+      Get.offAll(() => HomeScreen()); ///if there is a user logged in, navigates to the home screen
     }
   }
 
@@ -97,4 +98,33 @@ class AuthController extends GetxController {
     await setPrefValue("Role", role1.toString());
 
   }
-}
+
+  void loginUser(String userEmail, String userPassword) async
+  {
+    try
+    {
+      if (userEmail.isNotEmpty && userPassword.isNotEmpty)
+      { ///Here we're checking to see if all of the required fields are filled
+        UserCredential credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+          email: userEmail,
+          password: userPassword,
+        );
+      initializeScreen();
+      }
+      else
+      {
+        ///This displays an error message if any of the required fields are not filled
+        Get.snackbar('Error with account creation', 'All fields must be entered');
+      }
+
+    } on FirebaseAuthException catch (error)
+  ///This handles any Firebase Authentication exceptions (eg. if the email address is already in use)
+      {
+        Get.snackbar(
+          'Error with account creation',
+          error.message.toString(),
+        );
+      }
+    }
+  }
