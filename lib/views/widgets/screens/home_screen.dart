@@ -5,6 +5,7 @@ import 'package:mind_stride/views/widgets/screens/video_screen.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../app_pref.dart';
 import '../../../controllers/auth_controller.dart';
 import 'addVideo_screen.dart';
 import 'auth/profile_screen.dart';
@@ -19,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int pageIndex = 0;
-  late bool isAdmin;
+  bool isAdmin = false;
 
   @override
   void initState() {
@@ -28,13 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
   Future<void> initialize() async {
-    isAdmin = await getPrefValue("Role") == "0";
+    await AuthController.instance.getDataFromUser();
+    isAdmin = await Pref.getPrefValue("Role") == "0";
     setState(() {});
-  }
-
-  Future<String> getPrefValue(String key) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(key) ?? "";
   }
 
 
@@ -60,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavBarItems.add(
         const BottomNavigationBarItem(
           icon: Icon(Icons.add_box_rounded, size: 30),
-          label: '',
+          label: 'Add Videos',
         ),
       );
     }

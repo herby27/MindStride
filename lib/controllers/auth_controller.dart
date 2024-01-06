@@ -6,6 +6,7 @@ import 'package:mind_stride/models/user.dart' as model;
 import 'package:mind_stride/views/widgets/screens/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
+import '../app_pref.dart';
 import '../models/user.dart';
 import '../views/widgets/screens/auth/login_screen.dart';
 
@@ -40,11 +41,11 @@ class AuthController extends GetxController {
 
   ///This function retrieves an instance of SharedPreferences and then uses it to store the string value under a specific key
   ///The data will remain constant throughout app restarts, with the data being stored under the same key
-  Future<void> setPrefValue(String key, String value) async { ///The setPref function returns a Future that takes two parameters (key and value) and completes w/ no value
+  //Future<void> setPrefValue(String key, String value) async { ///The setPref function returns a Future that takes two parameters (key and value) and completes w/ no value
     ///Key is the identifier for the stored data and value is the data
-    final SharedPreferences prefs = await SharedPreferences.getInstance(); ///The var prefs to hold the instance of SharedPreferences
-    await prefs.setString(key, value);
-  }
+    //final SharedPreferences prefs = await SharedPreferences.getInstance(); ///The var prefs to hold the instance of SharedPreferences
+    //await prefs.setString(key, value);
+  //}
 
   ///This function stores a new user's data in the firestore database.
   void registerNewUser(
@@ -95,7 +96,7 @@ class AuthController extends GetxController {
     final userData = userDoc.data() ?? {} as dynamic; ///Data is extracted w/ the data() method; if there isn't any data, it defaults to an empty map
     int role1 = userData['role'] ?? 1; ///Looks for the role field in the userData map; if role field doesn't exist it defaults to 1
     ///Remember that regular user: role = 1; admin user: role = 0
-    await setPrefValue("Role", role1.toString());
+    await Pref.setPrefValue("Role", role1.toString());
 
   }
 
@@ -127,4 +128,8 @@ class AuthController extends GetxController {
         );
       }
     }
+
+  bool isAdminUser() {
+    return Pref.getPrefValue("Role") == "0";
+  }
   }
