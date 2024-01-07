@@ -1,59 +1,56 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:mind_stride/views/widgets/screens/finishUpload_screen.dart';
-import 'dart:io';
-import 'package:flutter/foundation.dart' show kIsWeb;
-
 import '../../../controllers/upload_controller.dart';
-
 
 class AddVideoScreen extends StatelessWidget {
   const AddVideoScreen({Key? key}) : super(key: key);
 
-  pickVideo(BuildContext context) async {
-    print("pickVideo function has been called!");
+  Future<void> pickVideoAndThumbnail(BuildContext context) async {
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Please select an mp4 video (16:9 aspect ratio)')),
+    );
+
+    FilePickerResult? videoResult = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['mp4'],
     );
 
-    if (result != null) {
-      File videoFile;
+    if (videoResult != null) {
+      Uint8List videoBytes = videoResult.files.first.bytes!;
+      String videoFileName = videoResult.files.first.name;
 
-      if (kIsWeb) {
-        // For web, use bytes property
-        videoFile = File.fromRawPath(result.files.first.bytes!);
-      } else {
-        // For other platforms, use path property
-        videoFile = File(result.files.first.path!);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select a jpg, jpeg, or png thumbnail image (16:9 aspect ratio)')),
+      );
+
+      FilePickerResult? imageResult = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png'],
+      );
+
+      if (imageResult != null) {
+        Uint8List thumbnailBytes = imageResult.files.first.bytes!;
+        String thumbnailFileName = imageResult.files.first.name;
+
+        UploadController uploadController = Get.find<UploadController>();
+        await uploadController.saveVideo(
+            'YourCaption', videoBytes, videoFileName, thumbnailBytes, thumbnailFileName
+        );
       }
-
-      UploadController uploadController = Get.put(
-        UploadController(),
-        tag: videoFile.path, // Unique tag for each file
-      );
-
-      await uploadController.saveVideo('YourCaption', videoFile.path);
-
-      Get.to(
-            () => FinishUploadScreen(
-          videoFile: videoFile,
-          videoPath: videoFile.path,
-        ),
-      );
     }
   }
 
 
-  showOptionsDialog(BuildContext context) {
-    return showDialog(
+  void showOptionsDialog(BuildContext context) {
+    showDialog(
       context: context,
       builder: (context) => SimpleDialog(
         children: [
           SimpleDialogOption(
-            onPressed: () => pickVideo(context),
+            onPressed: () => pickVideoAndThumbnail(context),
             child: Row(
               children: const [
                 Icon(Icons.file_upload),
@@ -102,7 +99,7 @@ class AddVideoScreen extends StatelessWidget {
                 'Add Video',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -1,103 +1,96 @@
-import 'dart:io';
-import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 import 'package:get/get.dart';
-import 'package:cached_video_player/cached_video_player.dart';
 import '../../../controllers/upload_controller.dart';
-import 'package:flutter/foundation.dart' show kIsWeb; // Import kIsWeb
 
 class FinishUploadScreen extends StatefulWidget {
-  final File videoFile;
-  final String videoPath;
+  final String videoUrl;
 
-  FinishUploadScreen({required this.videoFile, required this.videoPath});
+  FinishUploadScreen({required this.videoUrl});
 
   @override
   State<FinishUploadScreen> createState() => _FinishUploadScreenState();
 }
 
 class _FinishUploadScreenState extends State<FinishUploadScreen> {
-  UploadController uploadVideoController = Get.put(UploadController());
   ChewieController? chewieController;
-  TextEditingController descriptionTagsTextEditingController =
-  TextEditingController();
+  VideoPlayerController? videoPlayerController;
+  TextEditingController captionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    initializeVideoPlayer();
+  }
 
-    // Use different logic for web and other platforms
-    if (!kIsWeb) {
-      chewieController = ChewieController(
-        videoPlayerController: VideoPlayerController.file(widget.videoFile),
-        aspectRatio: 16 / 9,
-        autoInitialize: true,
-        looping: true,
-        autoPlay: true,
-      );
-    }
+  void initializeVideoPlayer() {
+    videoPlayerController = VideoPlayerController.network(widget.videoUrl)
+      ..initialize().then((_) {
+        setState(() {
+          chewieController = ChewieController(
+            videoPlayerController: videoPlayerController!,
+            aspectRatio: 16 / 9,
+            autoInitialize: true,
+            looping: true,
+            autoPlay: true,
+          );
+        });
+      });
   }
 
   @override
   void dispose() {
-    super.dispose();
+    videoPlayerController?.dispose();
     chewieController?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final UploadController uploadController = Get.find();
     return Scaffold(
+      appBar: AppBar(title: Text('Finish Upload')),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Display video player
-            if (!kIsWeb && chewieController != null)
+            if (chewieController != null)
               Chewie(controller: chewieController!),
-
-            const SizedBox(
-              height: 30,
-            ),
-
+            const SizedBox(height: 30),
             Container(
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
-                controller: descriptionTagsTextEditingController,
+                controller: captionController,
                 decoration: InputDecoration(
                   labelText: "Caption",
                   prefixIcon: Icon(Icons.slideshow_sharp),
-                  labelStyle: const TextStyle(
-                    fontSize: 20.0,
-                  ),
+                  labelStyle: const TextStyle(fontSize: 20.0),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                    ),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                    ),
+                    borderSide: const BorderSide(color: Colors.black),
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width - 38,
-              height: 54,
-              decoration: const BoxDecoration(
-                color: Colors.white70,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                uploadController.finalizeUpload(captionController.text);
+              },
+              child: const Text(
+                'Post',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
                 ),
               ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

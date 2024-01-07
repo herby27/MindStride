@@ -1,19 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
+  <!-- ... [other head elements] ... -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
@@ -31,36 +19,33 @@
 
   <title>mind_stride</title>
   <link rel="manifest" href="manifest.json">
+</head>
+<body>
+<!-- Firebase Configuration -->
+<script type="text/javascript">
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyDFs2V4avVeWl0NLzJUughSLa1_3_cFWPQ",
+      authDomain: "mindstride-4cfc3.firebaseapp.com",
+      projectId: "mindstride-4cfc3",
+      storageBucket: "mindstride-4cfc3.appspot.com",
+      messagingSenderId: "366282284454",
+      appId: "1:366282284454:web:0cf9e4790672021f05c367"
+    };
 
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
 
-
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "firebase/app";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-  apiKey: "AIzaSyDFs2V4avVeWl0NLzJUughSLa1_3_cFWPQ",
-  authDomain: "mindstride-4cfc3.firebaseapp.com",
-  projectId: "mindstride-4cfc3",
-  storageBucket: "mindstride-4cfc3.appspot.com",
-  messagingSenderId: "366282284454",
-  appId: "1:366282284454:web:0cf9e4790672021f05c367"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-
-  <script>
+<script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
   </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
-</head>
-<body>
-  <script>
+<!-- This script adds the flutter initialization JS code -->
+<script src="flutter.js" defer></script>
+
+<script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({

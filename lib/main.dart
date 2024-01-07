@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mind_stride/views/widgets/screens/auth/login_screen.dart';
 import 'controllers/auth_controller.dart';
+import 'controllers/upload_controller.dart'; // Import UploadController
 
 ///****************************************************************************
 /// MATTHEW HERBERT 2024
@@ -17,11 +18,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-        apiKey: "AIzaSyDFs2V4avVeWl0NLzJUughSLa1_3_cFWPQ",
-        appId: "1:366282284454:web:0cf9e4790672021f05c367",
-        messagingSenderId: "366282284454",
-        projectId: "mindstride-4cfc3")).then((value) {
-          Get.put(AuthController());
+      apiKey: "AIzaSyDFs2V4avVeWl0NLzJUughSLa1_3_cFWPQ",
+      appId: "1:366282284454:web:0cf9e4790672021f05c367",
+      messagingSenderId: "366282284454",
+      projectId: "mindstride-4cfc3",
+      storageBucket: "mindstride-4cfc3.appspot.com", // Ensure this matches your Firebase Console
+    ),
+  ).then((value) {
+    Get.put(AuthController()); // Initialize AuthController
+    Get.put(UploadController()); // Initialize UploadController globally
   });
   runApp(const MyApp());
 }
@@ -30,7 +35,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-///The build function creates a GetMaterialApp widget, which is a configuration widget within MyApp
+  ///The build function creates a GetMaterialApp widget, which is a configuration widget within MyApp
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -43,5 +48,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
