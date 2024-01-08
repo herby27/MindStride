@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mind_stride/views/widgets/screens/auth/login_screen.dart';
 import 'package:mind_stride/views/widgets/screens/search_screen.dart';
-import 'package:mind_stride/views/widgets/screens/video_screen.dart';
+import 'package:mind_stride/views/widgets/screens/for_you_video_screen.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     body: isAdmin
     ? [
-    const VideoScreen(),
+    const ForYouVideoScreen(),
     SearchScreen(),
     const BookmarkVideoScreen(),
     const AddVideoScreen(),
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ][pageIndex]
 
     : [
-    const VideoScreen(),
+    const ForYouVideoScreen(),
     SearchScreen(),
     const BookmarkVideoScreen(),
     ProfileScreen(uid: AuthController.instance.user.uid),

@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:mind_stride/models/video.dart';
+import 'package:mind_stride/views/widgets/screens/home_screen.dart';
 
+import '../views/widgets/screens/addVideo_screen.dart';
 import '../views/widgets/screens/finishUpload_screen.dart';
 
 class UploadController extends GetxController {
@@ -51,6 +53,7 @@ class UploadController extends GetxController {
         // Add other video details if needed
       });
       Get.snackbar("Success", "Video Posted Successfully");
+      Get.offAll(() => HomeScreen()); // Navigate directly to HomeScreen
     } catch (error) {
 
 
