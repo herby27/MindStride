@@ -32,8 +32,8 @@ class UploadController extends GetxController {
     Video videoObject = Video(
       uid: uid,
       username: (userDocumentSnapshot.data() as Map<String, dynamic>)["name"],
-      userIdThatBookmarked: [],
-      videoID: videoID,
+      //userIdThatBookmarked: [],
+      //videoID: videoID,
       caption: caption,
       videoUrl: videoUrl,
       thumbnail: thumbnailUrl,

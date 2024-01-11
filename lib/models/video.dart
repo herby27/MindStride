@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Video {
   String uid;
   String username;
-  String videoID;
-  List<String> userIdThatBookmarked;
+  //String videoID;
+  //List<String> userIdThatBookmarked;
   String thumbnail;
   String videoUrl;
   String caption;
@@ -12,8 +12,8 @@ class Video {
   Video({
     required this.uid,
     required this.username,
-    required this.videoID,
-    required this.userIdThatBookmarked,
+    //required this.videoID,
+    //required this.userIdThatBookmarked,
     required this.thumbnail,
     required this.videoUrl,
     required this.caption,
@@ -22,8 +22,8 @@ class Video {
   Map<String, dynamic> toJson() => {
     "uid": uid,
     "username": username,
-    "videoID": videoID,
-    "userIdThatBookmarked": userIdThatBookmarked,
+    //"videoID": videoID,
+    //"userIdThatBookmarked": userIdThatBookmarked,
     "thumbnail": thumbnail,
     "videoUrl": videoUrl,
     "caption": caption,
@@ -33,13 +33,13 @@ class Video {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return Video(
-      uid: snapshot['uid'],
-      username: snapshot['username'],
-      videoID: snapshot['videoID'],
-      userIdThatBookmarked: snapshot['userIdThatBookmarked'],
-      thumbnail: snapshot['thumbnail'],
-      videoUrl: snapshot['videoUrl'],
-      caption: snapshot['caption'],
+      uid: snapshot['uid'] ?? '',
+      username: snapshot['username'] ?? '',
+      //videoID: snapshot['videoID'],
+      //userIdThatBookmarked: snapshot['userIdThatBookmarked'],
+      caption: snapshot['caption'] ?? '',
+      thumbnail: snapshot['thumbnail'] ?? '',
+      videoUrl: snapshot['videoUrl'] ?? '',
     );
   }
 }

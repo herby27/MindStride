@@ -17,21 +17,27 @@ class VideoPlayerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    print("_videoList.bindStream() called!");
+
     _videoList.bindStream(
       FirebaseFirestore.instance
           .collection('videos')
-          .orderBy("videoID", descending: true)
+          //.orderBy("videoID", descending: true)
           .snapshots()
           .map((QuerySnapshot query) {
         List<Video> retVal = [];
         for (var element in query.docs) {
           retVal.add(Video.fromSnap(element));
         }
+
+        print("Retrieved ${retVal.length} videos");
+
         return retVal;
       }),
     );
 
-    deleteVideo(String id, int index) async {
+    /*deleteVideo(String id, int index) async {
       try {
         Reference refVid = FirebaseStorage.instance.ref().child('videos').child(
             id);
@@ -69,9 +75,9 @@ class VideoPlayerController extends GetxController {
           e.toString(),
         );
       }
-    }
+    } */
 
-    bookmarkVideo(String id) async {
+    /*bookmarkVideo(String id) async {
       DocumentSnapshot doc = await FirebaseFirestore.instance.collection(
           'videos').doc(id).get();
       var uid = FirebaseAuth.instance.currentUser!.uid;
@@ -107,5 +113,7 @@ class VideoPlayerController extends GetxController {
             .delete();
       }
     }
+
+     */
   }
 }
