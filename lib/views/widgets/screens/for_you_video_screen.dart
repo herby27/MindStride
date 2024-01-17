@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:video_player/video_player.dart' as vp; // Alias for video_player package
+import 'package:video_player/video_player.dart' as vp;
 import '../../../controllers/videoPlayer_controller.dart';
 
 class ForYouVideoScreen extends StatefulWidget {
@@ -21,65 +21,58 @@ class _ForYouVideoScreenState extends State<ForYouVideoScreen> {
         if (videoController.videoList.isEmpty) {
           return Center(child: Text("No videos available"));
         }
-
         if (_currentIndex >= videoController.videoList.length) {
           _currentIndex = 0;
         }
-
         final videoData = videoController.videoList[_currentIndex];
-        return Stack(
-          alignment: Alignment.center,
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            VideoPlayerWidget(
-              key: ValueKey(_currentIndex), // Add ValueKey with current index
-              videoUrl: videoData.videoUrl,
-            ),
-            Column(
-              children: [
-                const SizedBox(height: 110),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 18),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          videoData.username.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 25),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          videoData.caption.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 22),
-                        ),
-                        const SizedBox(height: 6),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              right: 10,
-              bottom: 100,
-              child: Column(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_upward),
-                    onPressed: _goToPreviousVideo,
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.arrow_downward),
-                    onPressed: _goToNextVideo,
-                  ),
-                ],
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Text(
+                videoData.username,
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
+            Expanded(
+              child: Center(
+                child: VideoPlayerWidget(
+                  key: ValueKey(_currentIndex),
+                  videoUrl: videoData.videoUrl,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                videoData.caption,
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+            ),
+            _buildVideoNavigationControls(),
           ],
         );
       }),
+    );
+  }
+
+  Widget _buildVideoNavigationControls() {
+    return Positioned(
+      right: 10,
+      bottom: 100,
+      child: Column(
+        children: [
+          IconButton(
+            icon: Icon(Icons.arrow_upward),
+            onPressed: _goToPreviousVideo,
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_downward),
+            onPressed: _goToNextVideo,
+          ),
+        ],
+      ),
     );
   }
 
@@ -104,8 +97,6 @@ class _ForYouVideoScreenState extends State<ForYouVideoScreen> {
       updateCurrentIndex(prevIndex);
     }
   }
-
-
 }
 
 class VideoPlayerWidget extends StatefulWidget {

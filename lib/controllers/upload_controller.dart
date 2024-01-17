@@ -12,6 +12,8 @@ import '../views/widgets/screens/finishUpload_screen.dart';
 class UploadController extends GetxController {
   late String videoUrl;
   late String thumbnailUrl;
+  late String uid;
+  late String username;
 
   Future<String> uploadFileToStorage(String path, Uint8List fileData, String fileName) async {
     Reference ref = FirebaseStorage.instance.ref().child(path).child(fileName);
@@ -20,45 +22,39 @@ class UploadController extends GetxController {
     return await snapshot.ref.getDownloadURL();
   }
 
-  Future<void> saveVideo(String caption, Uint8List videoBytes, String videoFileName, Uint8List thumbnailBytes, String thumbnailFileName) async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
+  Future<void> saveVideo(Uint8List videoBytes, String videoFileName, Uint8List thumbnailBytes, String thumbnailFileName) async {
+    uid = FirebaseAuth.instance.currentUser!.uid;
     DocumentSnapshot userDocumentSnapshot = await FirebaseFirestore.instance.collection("users").doc(uid).get();
-
-    String videoID = DateTime.now().millisecondsSinceEpoch.toString();
+    username = (userDocumentSnapshot.data() as Map<String, dynamic>)["name"];
 
     videoUrl = await uploadFileToStorage('videos', videoBytes, videoFileName);
     thumbnailUrl = await uploadFileToStorage('thumbnails', thumbnailBytes, thumbnailFileName);
 
-    Video videoObject = Video(
-      uid: uid,
-      username: (userDocumentSnapshot.data() as Map<String, dynamic>)["name"],
-      //userIdThatBookmarked: [],
-      //videoID: videoID,
-      caption: caption,
-      videoUrl: videoUrl,
-      thumbnail: thumbnailUrl,
-    );
-
-    await FirebaseFirestore.instance.collection("videos").doc(videoID).set(videoObject.toJson());
-
+    // Navigate to FinishUploadScreen with the video and thumbnail URLs
     Get.to(() => FinishUploadScreen(videoUrl: videoUrl));
   }
 
   void finalizeUpload(String caption) async {
     try {
-      await FirebaseFirestore.instance.collection("videos").add({
-        'caption': caption,
-        'videoUrl': videoUrl,
-        'thumbnailUrl': thumbnailUrl,
-        // Add other video details if needed
-      });
+      String videoID = DateTime.now().millisecondsSinceEpoch.toString();
+
+      Video videoObject = Video(
+        uid: uid,
+        username: username,
+        thumbnail: thumbnailUrl,
+        videoUrl: videoUrl,
+        caption: caption,
+      );
+
+      await FirebaseFirestore.instance.collection("videos").doc(videoID).set(videoObject.toJson());
+
       Get.snackbar("Success", "Video Posted Successfully");
-      Get.offAll(() => HomeScreen()); // Navigate directly to HomeScreen
+      Get.offAll(() => HomeScreen());
     } catch (error) {
-
-
       print("Error uploading video: $error");
       Get.snackbar("Unsuccessful Video Upload", error.toString());
     }
   }
 }
+
+

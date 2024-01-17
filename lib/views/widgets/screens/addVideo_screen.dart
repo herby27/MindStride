@@ -8,7 +8,6 @@ class AddVideoScreen extends StatelessWidget {
   const AddVideoScreen({Key? key}) : super(key: key);
 
   Future<void> pickVideoAndThumbnail(BuildContext context) async {
-
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Please select an mp4 video (16:9 aspect ratio)')),
     );
@@ -23,7 +22,8 @@ class AddVideoScreen extends StatelessWidget {
       String videoFileName = videoResult.files.first.name;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a jpg, jpeg, or png thumbnail image (16:9 aspect ratio)')),
+        SnackBar(content: Text(
+            'Please select a jpg, jpeg, or png thumbnail image (16:9 aspect ratio)')),
       );
 
       FilePickerResult? imageResult = await FilePicker.platform.pickFiles(
@@ -37,11 +37,11 @@ class AddVideoScreen extends StatelessWidget {
 
         UploadController uploadController = Get.find<UploadController>();
         await uploadController.saveVideo(
-            'YourCaption', videoBytes, videoFileName, thumbnailBytes, thumbnailFileName
-        );
+            videoBytes, videoFileName, thumbnailBytes, thumbnailFileName);
       }
     }
   }
+
 
 
   void showOptionsDialog(BuildContext context) {
