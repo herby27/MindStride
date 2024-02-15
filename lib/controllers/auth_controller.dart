@@ -48,45 +48,35 @@ class AuthController extends GetxController {
   //}
 
   ///This function stores a new user's data in the firestore database.
-  void registerNewUser(
-      String userName, String userEmail, String userPassword) async
-  {
-    try
-    {
-      if (userName.isNotEmpty && userEmail.isNotEmpty && userPassword.isNotEmpty) { ///Here we're checking to see if all of the required fields are filled
-        UserCredential credential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword( ///Create a new user in Firebase Authentication
+  void registerNewUser(String userName, String userEmail, String userPassword) async {
+    try {
+      if (userName.isNotEmpty && userEmail.isNotEmpty && userPassword.isNotEmpty) {
+        UserCredential credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: userEmail,
           password: userPassword,
         );
 
-        model.MindStrideUser user = model.MindStrideUser( ///Creates a MindStrideUser model object with the user's data
+        model.MindStrideUser user = model.MindStrideUser(
           name: userName,
           email: userEmail,
-          role: 1, ///The default role for a regular user is set to 1
+          role: 1, // The default role for a regular user is set to 1
           uid: credential.user!.uid,
         );
 
-        ///Here, we're storing the user data in the Firestore database under the 'users' collection
-        await FirebaseFirestore.instance
-            .collection("users")
+        await FirebaseFirestore.instance.collection("users")
             .doc(credential.user!.uid)
             .set(user.toJson());
-        initializeScreen(); ///This navigates the user to the appropriate screen after a successful registration
+
+        // Automatically log the user in after successful registration
+        loginUser(userEmail, userPassword); // This line logs in the user right after registration
       } else {
-        ///This displays an error message if any of the required fields are not filled
         Get.snackbar('Error with account creation', 'All fields must be entered');
       }
-
-    } on FirebaseAuthException catch (error)
-    ///This handles any Firebase Authentication exceptions (eg. if the email address is already in use)
-    {
-      Get.snackbar(
-        'Error with account creation',
-        error.message.toString(),
-      );
+    } on FirebaseAuthException catch (error) {
+      Get.snackbar('Error with account creation', error.message.toString(),);
     }
   }
+
 
   getDataFromUser() async { ///retrieves user=specific data from the Firestore database
     DocumentSnapshot userDoc = await FirebaseFirestore.instance
@@ -132,4 +122,12 @@ class AuthController extends GetxController {
   bool isAdminUser() {
     return Pref.getPrefValue("Role") == "0";
   }
+  void signOut() async {
+
+    FirebaseFirestore.instance.terminate();
+    await FirebaseAuth.instance.signOut();
+    initializeScreen();
+
+  }
+
   }

@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget{
           //Email Input
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.symmetric(horizontal: 400),
+            margin: const EdgeInsets.symmetric(horizontal: 30),
             //CALLS THE TEXTINPUTFIELD FUNCTION
             child: TextInputField(
               controller: _emailController,
@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget{
           //Password Input
           Container(
             width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.symmetric(horizontal: 400),
+            margin: const EdgeInsets.symmetric(horizontal: 30),
             child: TextInputField(
               controller: _passwordController,
               labelText: 'Password',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart' as vp;
 import '../../../controllers/videoPlayer_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ForYouVideoScreen extends StatefulWidget {
   const ForYouVideoScreen({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class ForYouVideoScreen extends StatefulWidget {
 
 class _ForYouVideoScreenState extends State<ForYouVideoScreen> {
   final VideoPlayerController videoController = Get.put(VideoPlayerController());
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   int _currentIndex = 0;
 
   @override
@@ -25,32 +27,50 @@ class _ForYouVideoScreenState extends State<ForYouVideoScreen> {
           _currentIndex = 0;
         }
         final videoData = videoController.videoList[_currentIndex];
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        final isBookmarked = videoData.userIdThatBookmarked.contains(_auth.currentUser!.uid);
+
+        return Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Text(
-                videoData.username,
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    videoData.username,
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: VideoPlayerWidget(
+                      key: ValueKey(_currentIndex),
+                      videoUrl: videoData.videoUrl,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    videoData.caption,
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
+                ),
+                _buildVideoNavigationControls(),
+              ],
             ),
-            Expanded(
-              child: Center(
-                child: VideoPlayerWidget(
-                  key: ValueKey(_currentIndex),
-                  videoUrl: videoData.videoUrl,
+            Positioned(
+              left: 20, // Adjust as necessary for alignment
+              top: MediaQuery.of(context).size.height / 2 - 20, // Center vertically relative to screen
+              child: InkWell(
+                onTap: () => videoController.toggleBookmark(videoData.id, _auth.currentUser!.uid),
+                child: Icon(
+                  isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                  size: 40,
+                  color: isBookmarked ? Colors.blue : Colors.grey,
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Text(
-                videoData.caption,
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-            ),
-            _buildVideoNavigationControls(),
           ],
         );
       }),
@@ -58,21 +78,19 @@ class _ForYouVideoScreenState extends State<ForYouVideoScreen> {
   }
 
   Widget _buildVideoNavigationControls() {
-    return Positioned(
-      right: 10,
-      bottom: 100,
-      child: Column(
-        children: [
-          IconButton(
-            icon: Icon(Icons.arrow_upward),
-            onPressed: _goToPreviousVideo,
-          ),
-          IconButton(
-            icon: Icon(Icons.arrow_downward),
-            onPressed: _goToNextVideo,
-          ),
-        ],
-      ),
+    // This widget is placed back at the bottom of the video
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: _goToPreviousVideo,
+        ),
+        IconButton(
+          icon: Icon(Icons.arrow_forward_ios),
+          onPressed: _goToNextVideo,
+        ),
+      ],
     );
   }
 
@@ -130,10 +148,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if(_controller.value.isInitialized){
+    if (_controller.value.isInitialized) {
       final aspectRatio = _controller.value.aspectRatio;
-
-
       final videoWidth = MediaQuery.of(context).size.width / 1.5;
 
       return Center(
@@ -142,11 +158,11 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           child: AspectRatio(
             aspectRatio: aspectRatio,
             child: vp.VideoPlayer(_controller),
-          )
-        )
+          ),
+        ),
       );
     } else {
-      return Center(child: Text("Loading"));
+      return Center(child: CircularProgressIndicator());
     }
   }
 }
