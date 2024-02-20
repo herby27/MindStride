@@ -19,8 +19,11 @@ class VideoPlayerController extends GetxController {
           .map((QuerySnapshot query) {
         List<Video> retVal = [];
         for (var element in query.docs) {
-          retVal.add(Video.fromSnap(element));
+          final video = Video.fromSnap(element);
+          print("Video from Firestore: ${video.videoUrl}"); // Debug print
+          retVal.add(video);
         }
+        print("Total videos fetched: ${retVal.length}"); // Debug print
         return retVal;
       }),
     );

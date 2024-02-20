@@ -15,20 +15,19 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
   @override
   void initState() {
     super.initState();
-    print('url: ${widget.videoUrl}');
-    //var newUrl = 'https://firebasestorage.googleapis.com/v0/b/tiktok-clone-49b2d.appspot.com/o/videos%2FVideo%207.mp4?alt=media&token=fd65895b-86ce-4d45-a50a-ea7fc2211809';
-    videoPlayerController = CachedVideoPlayerController.network(widget.videoUrl)
-      ..initialize().then((value) {
+    initializeVideoPlayer();
+  }
+
+  Future<void> initializeVideoPlayer() async {
+    videoPlayerController = CachedVideoPlayerController.network(widget.videoUrl);
+    await videoPlayerController.initialize();
+    if (mounted) {
+      setState(() {
         videoPlayerController.play();
         videoPlayerController.setVolume(1.0);
         videoPlayerController.setLooping(true);
       });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    videoPlayerController.pause();
+    }
   }
 
   @override
@@ -39,24 +38,17 @@ class _VideoPlayerItemState extends State<VideoPlayerItem> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return GestureDetector(
-      // onVerticalDragDown: (details) {
-      //   videoPlayerController.pause();
-      //   setState(() {});
-      // },
-      // onVerticalDragCancel: () {
-      //   videoPlayerController.play();
-      //   setState(() {});
-      // },
-      child: Container(
-        width: size.width,
-        height: size.height,
-        decoration: const BoxDecoration(
-          color: Colors.black,
-        ),
-        child: CachedVideoPlayer(videoPlayerController),
+    return videoPlayerController.value.isInitialized
+        ? AspectRatio(
+      aspectRatio: videoPlayerController.value.aspectRatio,
+      child: CachedVideoPlayer(videoPlayerController),
+    )
+        : Container(
+      width: 100, // Adjust according to your ListTile leading space
+      height: 56, // Keeping a 16:9 aspect ratio
+      color: Colors.black,
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

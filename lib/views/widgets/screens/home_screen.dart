@@ -29,7 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> initialize() async {
     await AuthController.instance.getDataFromUser();
-    isAdmin = Pref.getPrefValue("Role") == "0"; // Ensure this async call is awaited or handled correctly
+    String? roleValue = await Pref.getPrefValue("Role");
+    print("Role Value: $roleValue"); // Debug print to check the fetched role value.
+    isAdmin = roleValue == "0";
+    print("Is Admin: $isAdmin"); // Confirm isAdmin flag is set correctly.
     setState(() {});
   }
 

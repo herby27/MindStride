@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:mind_stride/views/widgets/screens/auth/login_screen.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/upload_controller.dart'; // Import UploadController
+import 'controllers/bookmarkVideo_controller.dart';
 
 ///****************************************************************************
 /// MATTHEW HERBERT 2024
@@ -27,6 +28,7 @@ void main() async {
   ).then((value) {
     Get.put(AuthController()); // Initialize AuthController
     Get.put(UploadController()); // Initialize UploadController globally
+    Get.put(BookmarkVideoController()); // Initialize BookmarkVideoController globally
   });
   runApp(const MyApp());
 }

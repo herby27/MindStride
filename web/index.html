@@ -22,26 +22,32 @@
 </head>
 <body>
 <!-- Firebase Configuration -->
-<script type="text/javascript">
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyDFs2V4avVeWl0NLzJUughSLa1_3_cFWPQ",
-      authDomain: "mindstride-4cfc3.firebaseapp.com",
-      projectId: "mindstride-4cfc3",
-      storageBucket: "mindstride-4cfc3.appspot.com",
-      messagingSenderId: "366282284454",
-      appId: "1:366282284454:web:0cf9e4790672021f05c367"
-    };
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
+  import { getAuth } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+  import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js';
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDFs2V4avVeWl0NLzJUughSLa1_3_cFWPQ",
+    authDomain: "mindstride-4cfc3.firebaseapp.com",
+    projectId: "mindstride-4cfc3",
+    storageBucket: "mindstride-4cfc3.appspot.com",
+    messagingSenderId: "366282284454",
+    appId: "1:366282284454:web:0cf9e4790672021f05c367"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+</script>
 
 <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
-  </script>
+</script>
 <!-- This script adds the flutter initialization JS code -->
 <script src="flutter.js" defer></script>
 
@@ -59,6 +65,6 @@
         }
       });
     });
-  </script>
+</script>
 </body>
 </html>

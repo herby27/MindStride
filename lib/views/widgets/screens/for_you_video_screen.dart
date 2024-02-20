@@ -123,21 +123,39 @@ class VideoPlayerWidget extends StatefulWidget {
   const VideoPlayerWidget({Key? key, required this.videoUrl}) : super(key: key);
 
   @override
-  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
+  State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
 }
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late vp.VideoPlayerController _controller;
+  bool _isInitialized = false; // Add a flag to track initialization
 
   @override
   void initState() {
     super.initState();
-    _controller = vp.VideoPlayerController.network(widget.videoUrl)
-      ..initialize().then((_) {
-        setState(() {});
-        _controller.setLooping(true);
-        _controller.play();
-      });
+    _initializeVideoPlayer();
+  }
+
+  Future<void> _initializeVideoPlayer() async {
+    // Ensure the video URL is not null or empty
+    if (widget.videoUrl.isNotEmpty) {
+      _controller = vp.VideoPlayerController.network(widget.videoUrl);
+
+      // Initialize the controller and set up listeners
+      await _controller.initialize();
+      _controller.setLooping(true);
+
+      // Check if the widget is still mounted before calling setState
+      if (mounted) {
+        setState(() {
+          _isInitialized = true; // Mark as initialized
+          _controller.play(); // Autoplay the video
+        });
+      }
+    } else {
+      // Handle the case where the video URL is invalid
+      print('Invalid video URL');
+    }
   }
 
   @override
@@ -148,21 +166,12 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_controller.value.isInitialized) {
-      final aspectRatio = _controller.value.aspectRatio;
-      final videoWidth = MediaQuery.of(context).size.width / 1.5;
-
-      return Center(
-        child: Container(
-          width: videoWidth,
-          child: AspectRatio(
-            aspectRatio: aspectRatio,
-            child: vp.VideoPlayer(_controller),
-          ),
-        ),
-      );
-    } else {
-      return Center(child: CircularProgressIndicator());
-    }
+    return _isInitialized
+        ? AspectRatio(
+      aspectRatio: _controller.value.aspectRatio,
+      child: vp.VideoPlayer(_controller),
+    )
+        : Center(child: CircularProgressIndicator());
   }
 }
+

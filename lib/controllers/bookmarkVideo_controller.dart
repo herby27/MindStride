@@ -11,34 +11,26 @@ class BookmarkVideoController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getBookmarkVideos();
+    subscribeToBookmarks();
   }
 
-  void getBookmarkVideos() async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-    print("Fetching bookmarked videos for user: $uid"); // Debug statement
-    try {
-      List<Video> bookmarks = [];
-      var bookmarkSnapshot = await FirebaseFirestore.instance
-          .collection('users').doc(uid)
-          .collection('bookmarkVideos').get();
-
-      print("Found ${bookmarkSnapshot.docs.length} bookmarked items"); // Debug
-
-      for (var bookmarkDoc in bookmarkSnapshot.docs) {
-        var videoDoc = await FirebaseFirestore.instance
-            .collection('videos').doc(bookmarkDoc.id).get();
-
-        if (videoDoc.exists) {
-          print("Adding video: ${videoDoc.id} to bookmarks"); // Debug
-          bookmarks.add(Video.fromSnap(videoDoc));
-        }
-      }
-      _videoList.value = bookmarks;
-    } catch (e) {
-      print("Error fetching bookmarked videos: $e"); // Error handling
+  void subscribeToBookmarks() {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      print("User ID is null. User might not be logged in.");
+      return;
     }
+    // Listening to changes in real-time
+    FirebaseFirestore.instance
+        .collection('videos')
+        .where('userIdThatBookmarked', arrayContains: uid)
+        .snapshots()
+        .listen((snapshot) {
+      final bookmarks = snapshot.docs.map((doc) => Video.fromSnap(doc)).toList();
+      _videoList.value = bookmarks;
+      print("${bookmarks.length} bookmarked videos fetched for user ID: $uid");
+    }).onError((error) {
+      print("Error subscribing to bookmarked videos: $error");
+    });
   }
-
 }
-
