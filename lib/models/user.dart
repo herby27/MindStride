@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 ///****************************************************************************
-///MATTHEW HERBERT 2024
+///MATTHEW H 2024
 ///This file defines a Dart class (MindStrideUser) that represents a user's information.
 ///This class is used to create MindStrideUser objects, convert user objects to JSON format, and create user objects from Firestore document snapshots
 ///****************************************************************************

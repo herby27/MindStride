@@ -4,6 +4,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import '../../../controllers/upload_controller.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///This file allows users to upload videos and corresponding thumbnails to MindStride
+///****************************************************************************
+
 class AddVideoScreen extends StatelessWidget {
   const AddVideoScreen({Key? key}) : super(key: key);
 

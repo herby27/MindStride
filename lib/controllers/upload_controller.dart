@@ -9,7 +9,7 @@ import '../views/widgets/screens/addVideo_screen.dart';
 import '../views/widgets/screens/finishUpload_screen.dart';
 
 ///****************************************************************************
-/// MATTHEW HERBERT 2024
+/// MATTHEW H 2024
 ///The UploadController class is responsible for handling the video upload process
 ///It manages the uploading of video and thumbnail files to Firebase storage
 ///It does this by creating a video object, reflecting Object Oriented Programming techniques

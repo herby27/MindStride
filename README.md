@@ -1,16 +1,21 @@
 # mind_stride
 
-A new Flutter project.
+This is my Flutter project created for my client Ms. Megan and submitted as my IB Computer Science IA project.
 
-## Getting Started
+## Running mind_stride
 
-This project is a starting point for a Flutter application.
+Ensure you have the following installed:
+Flutter SDK
+Android Studio
 
-A few resources to get you started if this is your first Flutter project:
+Open the Project in Android Studio: Start Android Studio, select "Open an Existing Project," and navigate to the project's directory.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Get Dependencies: Open the terminal in Android Studio (usually at the bottom of the window) and run flutter pub get
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Select the Chrome (web) Target: Ensure Chrome is selected as the target device in the toolbar.
+
+Run the Application: Click the green play button in the toolbar or use the Run > Run menu option. This builds the Flutter application and launches it in a new Chrome browser window.
+
+
+
+

@@ -3,6 +3,12 @@ import 'package:get/get.dart';
 import 'package:mind_stride/controllers/profile_controller.dart';
 import '../../../../controllers/auth_controller.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///This file controls the UI for the profile screen.
+///It includes a sign out functionality and an account deletion functionality
+///****************************************************************************
+
 class ProfileScreen extends StatefulWidget {
   final String uid;
   const ProfileScreen({

@@ -3,6 +3,12 @@ import 'package:get/get.dart';
 import 'package:video_player/video_player.dart' as vp;
 import 'package:mind_stride/controllers/bookmarkVideo_controller.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///This file serves to display a list of bookmarked videos to the user.
+///If there are multiple bookmarked videos, the user is able to toggle between the videos
+///****************************************************************************
+
 class BookmarkVideoScreen extends StatefulWidget {
   const BookmarkVideoScreen({Key? key}) : super(key: key);
 

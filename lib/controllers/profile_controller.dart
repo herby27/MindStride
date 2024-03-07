@@ -5,6 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../views/widgets/screens/auth/login_screen.dart';
 import 'auth_controller.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///This file manages the deletion of user data, intergfacing with Firebase to exute this task
+///****************************************************************************
+
 class ProfileController extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
 
@@ -17,9 +22,7 @@ class ProfileController extends GetxController {
     getUserData();
   }
 
-  ///Delete this if don't use!
   getUserData() async {
-    // Logic to fetch user data, if needed. For now, we are focusing on sign out and delete functionalities.
     update();
   }
 
@@ -54,7 +57,6 @@ class ProfileController extends GetxController {
   deleteUserData() async {
     var uid = FirebaseAuth.instance.currentUser!.uid;
     await FirebaseFirestore.instance.collection('users').doc(uid).delete();
-    // Delete videos if needed, adjust as per your app's requirements.
     FirebaseAuth.instance.currentUser!.delete();
     AuthController.instance.signOut(); // Ensure user is signed out after deletion
   }

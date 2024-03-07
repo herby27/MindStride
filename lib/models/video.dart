@@ -1,7 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///The Video class defines how video data is structured, handled, and
+///exchanged between the application and the backend Firebase database.
+///****************************************************************************
+
 class Video {
-  String id; // Add this line
+  String id;
   String uid;
   String username;
   String thumbnail;
@@ -10,7 +16,7 @@ class Video {
   List<dynamic> userIdThatBookmarked;
 
   Video({
-    required this.id, // Update constructor
+    required this.id,
     required this.uid,
     required this.username,
     required this.thumbnail,

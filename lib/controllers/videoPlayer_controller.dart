@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/video.dart';
 
+///****************************************************************************
+/// MATTHEW H 2024
+/// The VideoPlayerController class manages the fetching, display, and bookmarking functionality
+/// of videos within the application.
+/// This class interfaces with Firebase Firestore to retrieve video data.
+/// ****************************************************************************
+
 class VideoPlayerController extends GetxController {
   final Rx<List<Video>> _videoList = Rx<List<Video>>([]);
 

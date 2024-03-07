@@ -4,7 +4,7 @@ import '../../../../controllers/auth_controller.dart';
 import 'login_screen.dart';
 
 ///****************************************************************************
-///MATTHEW HERBERT 2024
+///MATTHEW H 2024
 ///This file defines a SignupScreen widget that creates the user registration screen for this MindStride flutter application
 ///It constructs the UI for the registration screen.
 ///It has a title, text input fields for username, email, and password, a registration button, and a link to the login screen

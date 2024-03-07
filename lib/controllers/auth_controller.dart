@@ -11,7 +11,7 @@ import '../models/user.dart';
 import '../views/widgets/screens/auth/login_screen.dart';
 
 ///****************************************************************************
-/// MATTHEW HERBERT 2024
+/// MATTHEW H 2024
 ///This file defines an AuthController class that manages authentication tasks
 /// is responsible for:
 ///  -managing user authentication

@@ -3,6 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import '../models/video.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///This file manages fetching the list of videos bookmarked by the current user in real-time,
+///and reacting to changes in the bookmarks collection for the user.
+///****************************************************************************
+
 class BookmarkVideoController extends GetxController {
   final Rx<List<Video>> _videoList = Rx<List<Video>>([]);
 

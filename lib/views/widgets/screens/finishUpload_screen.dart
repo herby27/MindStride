@@ -4,6 +4,13 @@ import 'package:video_player/video_player.dart';
 import 'package:get/get.dart';
 import '../../../controllers/upload_controller.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///The FinishUploadScreen is designed to provide a UI for the final step
+///in the video upload process.
+///It allows users to preview the uploaded video, enter a caption, and post the video.
+///****************************************************************************
+
 class FinishUploadScreen extends StatefulWidget {
   final String videoUrl;
 

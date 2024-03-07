@@ -7,7 +7,7 @@ import 'controllers/upload_controller.dart'; // Import UploadController
 import 'controllers/bookmarkVideo_controller.dart';
 
 ///****************************************************************************
-/// MATTHEW HERBERT 2024
+/// MATTHEW H 2024
 /// This file is the main entry point of the MindStride flutter application
 /// This code sets up the MindStride app with Firebase initialization,
 /// uses the get package for state management,

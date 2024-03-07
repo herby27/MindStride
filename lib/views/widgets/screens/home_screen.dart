@@ -10,6 +10,14 @@ import 'addVideo_screen.dart';
 import 'auth/profile_screen.dart';
 import 'bookmarkVideo_screen.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///This file serves as the main navigation hub of MindStride, containing
+///a bottom navigation bar allowing users to switch between different screens.
+///The home screen acts as the main framework within different screens are displayed.
+///The file adjusts the navigation options based on the user's role (admin or regular user)
+///****************************************************************************
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -30,9 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> initialize() async {
     await AuthController.instance.getDataFromUser();
     String? roleValue = await Pref.getPrefValue("Role");
-    print("Role Value: $roleValue"); // Debug print to check the fetched role value.
+    print("Role Value: $roleValue");
     isAdmin = roleValue == "0";
-    print("Is Admin: $isAdmin"); // Confirm isAdmin flag is set correctly.
+    print("Is Admin: $isAdmin");
     setState(() {});
   }
 
@@ -40,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     List<Widget> pageList = [
       ForYouVideoScreen(),
-      BookmarkVideoScreen(), // Removed const
+      BookmarkVideoScreen(),
     ];
 
     if (isAdmin) {

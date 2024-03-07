@@ -4,6 +4,12 @@ import 'package:video_player/video_player.dart' as vp;
 import '../../../controllers/videoPlayer_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+///****************************************************************************
+///MATTHEW H 2024
+///This file provides the video player functionalities, handling user interactions
+///Related to videos (playing a video, toggling between videos, bookmakring a video)
+///****************************************************************************
+
 class ForYouVideoScreen extends StatefulWidget {
   const ForYouVideoScreen({Key? key}) : super(key: key);
 
@@ -78,7 +84,6 @@ class _ForYouVideoScreenState extends State<ForYouVideoScreen> {
   }
 
   Widget _buildVideoNavigationControls() {
-    // This widget is placed back at the bottom of the video
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
